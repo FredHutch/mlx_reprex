@@ -1,0 +1,25 @@
+DESCRIPTION:
+Model file for jointly modeling two drugs. 
+
+[LONGITUDINAL]
+
+input = {V1A, ClA, QA, V2A, V1B, ClB, QB, V2B}
+
+PK:
+; Parameter transformations 
+VA = V1A
+kA = ClA/V1A 
+k12 = QA/V1A 
+k21 = QA/V2A
+
+CcA = pkmodel(V = VA, k = kA, k12 = k12, k21 = k21)
+
+VB = V1B
+kB = ClB/V1B 
+k34 = QB/V1B 
+k43 = QB/V2B
+
+CcB = pkmodel(V = VB, k = kB, k12 = k34, k21 = k43)
+
+OUTPUT:
+output = {CcA, CcB}

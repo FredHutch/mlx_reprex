@@ -1,0 +1,14 @@
+This is a simple simulated example for multivariate bolus model.
+
+data_gen.R makes the data, the gist is:
+pk_parms1 = convert_2cmp_pkparms(CL = 0.1, Vc = 1, Q = 1, Vp = 1)
+pk_parms2 = convert_2cmp_pkparms(CL = 0.2, Vc = 2, Q = 1, Vp = 1)
+dose1 = 1500
+dose2 = 1000
+
+model.mlxtran project uses the pkmodel approach (see bolus_2cpt_V1ClQV2_multianalyte.txt)
+
+explicit_ode_model.mlxtran project uses an explicitly coded ode approach where the doses (initial conditions) are hard coded (see ode_multianalyte.txt)
+
+
+

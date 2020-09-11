@@ -1,0 +1,67 @@
+<DATAFILE>
+
+[FILEINFO]
+file = 'sim_test_data.csv'
+delimiter = comma
+header = {ID, TIME, DVID, DV, ID_UNIQUE, AMT}
+
+[CONTENT]
+ID = {use=identifier}
+TIME = {use=time}
+DVID = {use=observationtype}
+DV = {use=observation, name={y_1, y_2}, yname={'1', '2'}, type={continuous, continuous}}
+AMT = {use=amount}
+
+<MODEL>
+
+[INDIVIDUAL]
+input = {ClA_pop, ClB_pop, QA_pop, QB_pop, V1A_pop, V1B_pop, V2A_pop, V2B_pop}
+
+DEFINITION:
+ClA = {distribution=logNormal, typical=ClA_pop, no-variability}
+ClB = {distribution=logNormal, typical=ClB_pop, no-variability}
+QA = {distribution=logNormal, typical=QA_pop, no-variability}
+QB = {distribution=logNormal, typical=QB_pop, no-variability}
+V1A = {distribution=logNormal, typical=V1A_pop, no-variability}
+V1B = {distribution=logNormal, typical=V1B_pop, no-variability}
+V2A = {distribution=logNormal, typical=V2A_pop, no-variability}
+V2B = {distribution=logNormal, typical=V2B_pop, no-variability}
+
+[LONGITUDINAL]
+input = {a1, a2}
+
+file = 'ode_multianalyte.txt'
+
+DEFINITION:
+y1 = {distribution=normal, prediction=centr, errorModel=constant(a1)}
+y2 = {distribution=normal, prediction=centr2, errorModel=constant(a2)}
+
+<FIT>
+data = {y_1, y_2}
+model = {y1, y2}
+
+<PARAMETER>
+ClA_pop = {value=1, method=MLE}
+ClB_pop = {value=1, method=MLE}
+QA_pop = {value=1, method=MLE}
+QB_pop = {value=1, method=MLE}
+V1A_pop = {value=1, method=MLE}
+V1B_pop = {value=1, method=MLE}
+V2A_pop = {value=1, method=MLE}
+V2B_pop = {value=1, method=MLE}
+a1 = {value=1, method=MLE}
+a2 = {value=1, method=MLE}
+
+<MONOLIX>
+
+[TASKS]
+populationParameters()
+individualParameters(method = {conditionalMean, conditionalMode })
+fim(run = false,method = StochasticApproximation)
+logLikelihood(run = false,method = ImportanceSampling)
+plotResult(method = {outputplot, indfits, parameterdistribution, covariatemodeldiagnosis, randomeffects, covariancemodeldiagnosis, saemresults })
+
+[SETTINGS]
+GLOBAL:
+exportpath = 'explicit_ode_model'
+

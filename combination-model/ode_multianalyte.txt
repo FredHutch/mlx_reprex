@@ -1,0 +1,32 @@
+DESCRIPTION:
+Model file for jointly modeling two drugs. 
+
+[LONGITUDINAL]
+
+input = {V1A, ClA, QA, V2A, V1B, ClB, QB, V2B}
+
+EQUATION:
+
+centr_0=1500/V1A
+peri_0=0
+
+centr2_0=1000/V1B
+peri2_0=0
+
+kA = ClA/V1A 
+k12 = QA/V1A 
+k21 = QA/V2A
+
+kB = ClB/V1B 
+k34 = QB/V1B 
+k43 = QB/V2B
+   
+ddt_centr = -(k12+kA)*centr + k21 * peri
+ddt_peri = k12*centr - k21*peri
+
+ddt_centr2 = -(k34+kB)*centr2 + k43 * peri2
+ddt_peri2 = k34*centr2 - k43*peri2
+
+
+OUTPUT:
+output={centr, centr2}
